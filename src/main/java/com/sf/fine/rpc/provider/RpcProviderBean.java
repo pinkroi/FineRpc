@@ -18,7 +18,7 @@ public class RpcProviderBean {
     private Object target;
 
     public void init() {
-        ProviderServer.getInstance().addService(serviceMetadata.getServiceName()+":"+serviceMetadata.getServiceVersion(), target);
+        ProviderServiceCache.addService(serviceMetadata.getServiceName()+":"+serviceMetadata.getServiceVersion(), target);
 
         new Thread(()->ProviderServer.getInstance().startNettyServer()).start();
 

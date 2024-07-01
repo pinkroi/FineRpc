@@ -17,7 +17,7 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcRequest> 
         response.setRequestId(response.getRequestId());
 
         try {
-            Object providerBean = ProviderServer.getInstance().getService(rpcRequest.getServiceName()+":"+rpcRequest.getServiceVersion());
+            Object providerBean = ProviderServiceCache.getService(rpcRequest.getServiceName()+":"+rpcRequest.getServiceVersion());
 
             if (null == providerBean) {
                 throw new RuntimeException("provider not exist");

@@ -14,8 +14,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
@@ -25,7 +23,7 @@ public class ProviderServer {
 
     private ProviderServer() {}
 
-    public static ProviderServer getInstance() {
+    public synchronized static ProviderServer getInstance() {
         if (null == instance) {
             instance = new ProviderServer();
         }
@@ -67,13 +65,4 @@ public class ProviderServer {
         }
     }
 
-    final Map<String, Object> SERVICE_CACHE = new ConcurrentHashMap<>();
-
-    void addService(String serviceName, Object service) {
-        SERVICE_CACHE.put(serviceName, service);
-    }
-
-    Object getService(String serviceName) {
-        return SERVICE_CACHE.get(serviceName);
-    }
 }
