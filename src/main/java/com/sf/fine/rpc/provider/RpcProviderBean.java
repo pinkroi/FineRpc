@@ -1,5 +1,6 @@
 package com.sf.fine.rpc.provider;
 
+import com.sf.fine.rpc.common.ServiceUtils;
 import com.sf.fine.rpc.registry.ServiceMetadata;
 import com.sf.fine.rpc.registry.ServiceRegistryFactory;
 import com.sf.fine.rpc.test.UserService;
@@ -18,7 +19,7 @@ public class RpcProviderBean {
     private Object target;
 
     public void init() {
-        ProviderServiceCache.addService(serviceMetadata.getServiceName()+":"+serviceMetadata.getServiceVersion(), target);
+        ProviderServiceCache.addService(ServiceUtils.uniqueServiceName(serviceMetadata), target);
 
         new Thread(()->ProviderServer.getInstance().startNettyServer()).start();
 

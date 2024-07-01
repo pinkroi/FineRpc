@@ -1,5 +1,6 @@
 package com.sf.fine.rpc.provider;
 
+import com.sf.fine.rpc.common.ServiceUtils;
 import com.sf.fine.rpc.protocol.RpcRequest;
 import com.sf.fine.rpc.protocol.RpcResponse;
 import io.netty.channel.ChannelFutureListener;
@@ -17,7 +18,7 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcRequest> 
         response.setRequestId(response.getRequestId());
 
         try {
-            Object providerBean = ProviderServiceCache.getService(rpcRequest.getServiceName()+":"+rpcRequest.getServiceVersion());
+            Object providerBean = ProviderServiceCache.getService(ServiceUtils.uniqueServiceName(rpcRequest));
 
             if (null == providerBean) {
                 throw new RuntimeException("provider not exist");

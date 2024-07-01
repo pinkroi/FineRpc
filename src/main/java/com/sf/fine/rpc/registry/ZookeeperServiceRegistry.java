@@ -1,5 +1,6 @@
 package com.sf.fine.rpc.registry;
 
+import com.sf.fine.rpc.common.ServiceUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -51,7 +52,7 @@ public class ZookeeperServiceRegistry implements ServiceRegistry {
         ServiceInstance<ServiceMetadata> serviceInstance = ServiceInstance
                 .<ServiceMetadata>builder()
                 //使用{服务名}:{服务版本}唯一标识一个服务
-                .name(serviceMetadata.getServiceName()+":"+serviceMetadata.getServiceVersion())
+                .name(ServiceUtils.uniqueServiceName(serviceMetadata))
                 .address(serviceMetadata.getServiceAddress())
                 .port(serviceMetadata.getServicePort())
                 .payload(serviceMetadata)
@@ -65,7 +66,7 @@ public class ZookeeperServiceRegistry implements ServiceRegistry {
         ServiceInstance<ServiceMetadata> serviceInstance = ServiceInstance
                 .<ServiceMetadata>builder()
                 //使用{服务名}:{服务版本}唯一标识一个服务
-                .name(serviceMetadata.getServiceName()+":"+serviceMetadata.getServiceVersion())
+                .name(ServiceUtils.uniqueServiceName(serviceMetadata))
                 .address(serviceMetadata.getServiceAddress())
                 .port(serviceMetadata.getServicePort())
                 .payload(serviceMetadata)
