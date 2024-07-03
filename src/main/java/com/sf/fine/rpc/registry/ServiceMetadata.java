@@ -2,6 +2,7 @@ package com.sf.fine.rpc.registry;
 
 public class ServiceMetadata {
 
+    private Class<?> serviceInterface;
     private String serviceName;
     private String serviceVersion;
     private String serviceAddress;
@@ -10,6 +11,14 @@ public class ServiceMetadata {
     private int serviceRegistryPort;
 
     public ServiceMetadata() {
+    }
+
+    public Class<?> getServiceInterface() {
+        return serviceInterface;
+    }
+
+    public void setServiceInterface(Class<?> serviceInterface) {
+        this.serviceInterface = serviceInterface;
     }
 
     public String getServiceName() {

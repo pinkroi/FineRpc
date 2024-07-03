@@ -11,12 +11,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Slf4j
 public class ProviderServer {
+    private static final Logger LOG = LoggerFactory.getLogger(ProviderServer.class);
 
     private static ProviderServer instance;
 
@@ -57,7 +58,7 @@ public class ProviderServer {
             ChannelFuture future = bootstrap.bind(host, port).sync();
             future.channel().closeFuture().sync();
         } catch (Exception e) {
-            log.error("ProviderServer#start error errMsg={}", e.getMessage(), e);
+            LOG.error("ProviderServer#start error errMsg={}", e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }

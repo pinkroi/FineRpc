@@ -20,8 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ZookeeperServiceRegistry implements ServiceRegistry {
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperServiceRegistry.class);
 
-    private static final Logger log = LoggerFactory.getLogger(ZookeeperServiceRegistry.class);
     private AtomicBoolean isInit = new AtomicBoolean(false);
     private CuratorFramework client;
     private final Object lock = new Object();
@@ -36,7 +36,7 @@ public class ZookeeperServiceRegistry implements ServiceRegistry {
         try {
             init(host, port);
         } catch (Exception e) {
-            log.error("init zookeeper failed, errMsg={}", e.getMessage(), e);
+            LOG.error("init zookeeper failed, errMsg={}", e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }

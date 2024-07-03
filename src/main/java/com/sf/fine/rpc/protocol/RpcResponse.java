@@ -3,6 +3,7 @@ package com.sf.fine.rpc.protocol;
 import java.io.Serializable;
 
 public class RpcResponse implements Serializable {
+
     private String requestId;
     private boolean success;
     private String code;

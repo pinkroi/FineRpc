@@ -6,18 +6,16 @@ import com.sf.fine.rpc.protocol.RpcRequest;
 import com.sf.fine.rpc.protocol.RpcResponse;
 import com.sf.fine.rpc.registry.ServiceMetadata;
 import com.sf.fine.rpc.registry.ServiceRegistry;
-import com.sf.fine.rpc.registry.ServiceRegistryFactory;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
-
-@Slf4j
 public class ConsumerClient extends SimpleChannelInboundHandler<RpcResponse> {
+    private static final Logger LOG = LoggerFactory.getLogger(ConsumerClient.class);
 
     private final Object obj = new Object();
 
@@ -29,8 +27,8 @@ public class ConsumerClient extends SimpleChannelInboundHandler<RpcResponse> {
 
     private Channel channel;
 
-    public void init() {
-        this.serviceRegistry = ServiceRegistryFactory.getServiceRegistry("127.0.0.1",2181);
+    public ConsumerClient(ServiceRegistry serviceRegistry) {
+        this.serviceRegistry = serviceRegistry;
     }
 
     public RpcResponse sendRequest(RpcRequest rpcRequest) throws Exception {
@@ -40,7 +38,7 @@ public class ConsumerClient extends SimpleChannelInboundHandler<RpcResponse> {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            log.debug("init consumer request...");
+                            LOG.debug("init consumer request...");
                             socketChannel.pipeline()
                                     .addLast(new RpcEncoder())
                                     .addLast(new RpcDecoder())
@@ -57,9 +55,9 @@ public class ConsumerClient extends SimpleChannelInboundHandler<RpcResponse> {
 
             future.addListener((ChannelFutureListener)arg0 -> {
                 if (future.isSuccess()) {
-                    log.debug("connect rpc provider success");
+                    LOG.debug("connect rpc provider success");
                 } else {
-                    log.error("connect rpc provider fail");
+                    LOG.error("connect rpc provider fail");
                     future.cause().printStackTrace();
                     worker.shutdownGracefully(); //关闭线程组
                 }
@@ -86,7 +84,7 @@ public class ConsumerClient extends SimpleChannelInboundHandler<RpcResponse> {
         if (this.worker != null) {
             this.worker.shutdownGracefully();
         }
-        log.debug("shutdown consumer...");
+        LOG.debug("shutdown consumer...");
     }
 
     @Override
