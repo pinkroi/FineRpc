@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sf.fine</groupId>
-	<artifactId>rpc</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>fine-rpc</artifactId>
+	<version>1.0.0</version>
 	<name>rpc</name>
-	<description>fineRpc</description>
+	<description>fine-rpc</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -80,20 +80,11 @@
 
 		<!--hessian-->
 		<dependency>
-			<groupId>com.caucho</groupId>
+			<groupId>hessian</groupId>
 			<artifactId>hessian</artifactId>
-			<version>4.0.38</version>
+			<version>3.2.1</version>
 		</dependency>
 
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
