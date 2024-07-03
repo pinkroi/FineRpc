@@ -4,14 +4,9 @@ public class ServiceRegistryFactory {
 
     private static ServiceRegistry serviceRegistry;
 
-    public static ServiceRegistry getServiceRegistry() {
+    public synchronized static ServiceRegistry getServiceRegistry(String host, int port) {
         if (null == serviceRegistry) {
-            serviceRegistry = new ZookeeperServiceRegistry();
-            try {
-                serviceRegistry.init();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            serviceRegistry = new ZookeeperServiceRegistry(host, port);
             return serviceRegistry;
         }
         return serviceRegistry;

@@ -18,20 +18,18 @@ public class RpcProviderHandler extends SimpleChannelInboundHandler<RpcRequest> 
         response.setRequestId(response.getRequestId());
 
         try {
-            Object providerBean = ProviderServiceCache.getService(ServiceUtils.uniqueServiceName(rpcRequest));
-
-            if (null == providerBean) {
+            Object target = RpcProviderCache.get(ServiceUtils.uniqueServiceName(rpcRequest));
+            if (null == target) {
                 throw new RuntimeException("provider not exist");
             }
 
-            Class<?> providerClass = providerBean.getClass();
             String methodName = rpcRequest.getMethodName();
             Class<?>[] parameterTypes = rpcRequest.getParameterTypes();
             Object[] parameters = rpcRequest.getParameters();
 
-            FastClass providerFastClass = FastClass.create(providerClass);
+            FastClass providerFastClass = FastClass.create(target.getClass());
             int methodIndex = providerFastClass.getIndex(methodName, parameterTypes);
-            Object result = providerFastClass.invoke(methodIndex, providerBean, parameters);
+            Object result = providerFastClass.invoke(methodIndex, target, parameters);
             response.setResult(result);
             response.success(true);
         } catch (Throwable t) {

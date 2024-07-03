@@ -13,7 +13,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.net.InetAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
@@ -32,7 +31,7 @@ public class ProviderServer {
 
     private final AtomicBoolean isInit = new AtomicBoolean(false);
 
-    synchronized void startNettyServer() {
+    synchronized void startNettyServer(String host, int port) {
         if (!isInit.compareAndSet(false, true)) {
             return;
         }
@@ -55,8 +54,6 @@ public class ProviderServer {
                         }
                     });
 
-            final String host = InetAddress.getLocalHost().getHostAddress();
-            final int port = 12300;
             ChannelFuture future = bootstrap.bind(host, port).sync();
             future.channel().closeFuture().sync();
         } catch (Exception e) {

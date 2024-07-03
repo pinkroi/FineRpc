@@ -25,12 +25,12 @@ public class ConsumerClient extends SimpleChannelInboundHandler<RpcResponse> {
 
     private RpcResponse rpcResponse;
 
-    private EventLoopGroup worker = new NioEventLoopGroup(4);
+    private EventLoopGroup worker = new NioEventLoopGroup();
 
     private Channel channel;
 
     public void init() {
-        this.serviceRegistry = ServiceRegistryFactory.getServiceRegistry();
+        this.serviceRegistry = ServiceRegistryFactory.getServiceRegistry("127.0.0.1",2181);
     }
 
     public RpcResponse sendRequest(RpcRequest rpcRequest) throws Exception {

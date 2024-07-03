@@ -1,12 +1,15 @@
 package com.sf.fine.rpc.common;
 
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-//@ConfigurationProperties(prefix = "rpc")
+@ConfigurationProperties(prefix = "spring.rpc")
 public class RpcProperties {
 
     private String serviceAddress;
-    private int servicePort;
+    private String servicePort;
     private String serviceRegistryAddress;
+    private String serviceRegistryPort;
 
     public String getServiceAddress() {
         return serviceAddress;
@@ -16,11 +19,11 @@ public class RpcProperties {
         this.serviceAddress = serviceAddress;
     }
 
-    public int getServicePort() {
+    public String getServicePort() {
         return servicePort;
     }
 
-    public void setServicePort(int servicePort) {
+    public void setServicePort(String servicePort) {
         this.servicePort = servicePort;
     }
 
@@ -30,5 +33,13 @@ public class RpcProperties {
 
     public void setServiceRegistryAddress(String serviceRegistryAddress) {
         this.serviceRegistryAddress = serviceRegistryAddress;
+    }
+
+    public String getServiceRegistryPort() {
+        return serviceRegistryPort;
+    }
+
+    public void setServiceRegistryPort(String serviceRegistryPort) {
+        this.serviceRegistryPort = serviceRegistryPort;
     }
 }

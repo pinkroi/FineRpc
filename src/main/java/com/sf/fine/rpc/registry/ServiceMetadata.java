@@ -6,15 +6,10 @@ public class ServiceMetadata {
     private String serviceVersion;
     private String serviceAddress;
     private int servicePort;
+    private String serviceRegistryAddress;
+    private int serviceRegistryPort;
 
     public ServiceMetadata() {
-    }
-
-    public ServiceMetadata(String serviceName, String serviceVersion, String serviceAddress, int servicePort) {
-        this.serviceName = serviceName;
-        this.serviceVersion = serviceVersion;
-        this.serviceAddress = serviceAddress;
-        this.servicePort = servicePort;
     }
 
     public String getServiceName() {
@@ -49,6 +44,22 @@ public class ServiceMetadata {
         this.servicePort = servicePort;
     }
 
+    public String getServiceRegistryAddress() {
+        return serviceRegistryAddress;
+    }
+
+    public void setServiceRegistryAddress(String serviceRegistryAddress) {
+        this.serviceRegistryAddress = serviceRegistryAddress;
+    }
+
+    public int getServiceRegistryPort() {
+        return serviceRegistryPort;
+    }
+
+    public void setServiceRegistryPort(int serviceRegistryPort) {
+        this.serviceRegistryPort = serviceRegistryPort;
+    }
+
     @Override
     public String toString() {
         return "ServiceMetadata{" +
@@ -56,6 +67,8 @@ public class ServiceMetadata {
                 ", serviceVersion='" + serviceVersion + '\'' +
                 ", serviceAddress='" + serviceAddress + '\'' +
                 ", servicePort=" + servicePort +
+                ", serviceRegistryAddress='" + serviceRegistryAddress + '\'' +
+                ", serviceRegistryPort=" + serviceRegistryPort +
                 '}';
     }
 }

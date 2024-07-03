@@ -3,38 +3,56 @@ package com.sf.fine.rpc.provider;
 import com.sf.fine.rpc.common.ServiceUtils;
 import com.sf.fine.rpc.registry.ServiceMetadata;
 import com.sf.fine.rpc.registry.ServiceRegistryFactory;
-import com.sf.fine.rpc.test.UserService;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class RpcProviderBean {
 
-    public RpcProviderBean() {
-    }
+    private final ServiceMetadata serviceMetadata = new ServiceMetadata();
 
-    private ServiceMetadata serviceMetadata;
-
-    private Object target;
+    private Class<?> targetClass;
 
     public void init() {
-        ProviderServiceCache.addService(ServiceUtils.uniqueServiceName(serviceMetadata), target);
-
-        new Thread(()->ProviderServer.getInstance().startNettyServer()).start();
-
         try {
-            ServiceRegistryFactory.getServiceRegistry().registry(serviceMetadata);
+            RpcProviderCache.add(ServiceUtils.uniqueServiceName(serviceMetadata), targetClass.newInstance());
+
+            new Thread(
+                    () -> ProviderServer.getInstance()
+                            .startNettyServer(serviceMetadata.getServiceAddress(),
+                                    serviceMetadata.getServicePort())
+            ).start();
+
+            ServiceRegistryFactory.getServiceRegistry(serviceMetadata.getServiceRegistryAddress(),
+                    serviceMetadata.getServiceRegistryPort()).registry(serviceMetadata);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void main(String[] args) {
-        RpcProviderBean providerBean = new RpcProviderBean();
-        ServiceMetadata metadata = new ServiceMetadata("com.sf.fine.rpc.test.UserService", "1.0.0", "127.0.0.1", 12300);
-        providerBean.setServiceMetadata(metadata);
-        providerBean.setTarget(new UserService());
-        providerBean.init();
+    public void setTargetClass(Class<?> targetClass) {
+        this.targetClass = targetClass;
     }
+
+    public void setServiceName(String serviceName) {
+        this.serviceMetadata.setServiceName(serviceName);
+    }
+
+    public void setServiceVersion(String serviceVersion) {
+        this.serviceMetadata.setServiceVersion(serviceVersion);
+    }
+
+    public void setServiceAddress(String serviceAddress) {
+        this.serviceMetadata.setServiceAddress(serviceAddress);
+    }
+
+    public void setServicePort(int servicePort) {
+        this.serviceMetadata.setServicePort(servicePort);
+    }
+
+    public void setServiceRegistryAddress(String serviceRegistryAddress) {
+        this.serviceMetadata.setServiceRegistryAddress(serviceRegistryAddress);
+    }
+
+    public void setServiceRegistryPort(int serviceRegistryPort) {
+        this.serviceMetadata.setServiceRegistryPort(serviceRegistryPort);
+    }
+
 }

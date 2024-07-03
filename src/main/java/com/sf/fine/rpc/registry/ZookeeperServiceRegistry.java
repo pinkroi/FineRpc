@@ -8,6 +8,8 @@ import org.apache.curator.utils.CloseableUtils;
 import org.apache.curator.x.discovery.*;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 import org.apache.curator.x.discovery.strategies.RoundRobinStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ZookeeperServiceRegistry implements ServiceRegistry {
 
+    private static final Logger log = LoggerFactory.getLogger(ZookeeperServiceRegistry.class);
     private AtomicBoolean isInit = new AtomicBoolean(false);
     private CuratorFramework client;
     private final Object lock = new Object();
@@ -29,14 +32,22 @@ public class ZookeeperServiceRegistry implements ServiceRegistry {
     private Map<String, ServiceProvider<ServiceMetadata>> serviceProviderCache;
     private List<Closeable> closeableProviders = new ArrayList<>();
 
-    @Override
-    public void init() throws Exception {
+    public ZookeeperServiceRegistry(String host, int port) {
+        try {
+            init(host, port);
+        } catch (Exception e) {
+            log.error("init zookeeper failed, errMsg={}", e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void init(String host, int port) throws Exception {
         if (!isInit.compareAndSet(false, true)) {
             return;
         }
         serviceProviderCache = new ConcurrentHashMap<>(256);
 
-        this.client = CuratorFrameworkFactory.newClient("127.0.0.1:2181", new ExponentialBackoffRetry(1000, 3));
+        this.client = CuratorFrameworkFactory.newClient(host+":"+port, new ExponentialBackoffRetry(1000, 3));
         this.client.start();
         JsonInstanceSerializer<ServiceMetadata> serializer = new JsonInstanceSerializer<>(ServiceMetadata.class);
         serviceDiscovery = ServiceDiscoveryBuilder.builder(ServiceMetadata.class)
