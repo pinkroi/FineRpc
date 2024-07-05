@@ -35,12 +35,6 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 		<!-- Zookeeper -->
 		<dependency>
 			<groupId>org.apache.curator</groupId>
@@ -51,8 +45,13 @@
 					<groupId>log4j</groupId>
 					<artifactId>log4j</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.curator</groupId>
 			<artifactId>curator-recipes</artifactId>
@@ -83,6 +82,13 @@
 			<groupId>hessian</groupId>
 			<artifactId>hessian</artifactId>
 			<version>3.2.1</version>
+		</dependency>
+
+		<!--Nacos-->
+		<dependency>
+			<groupId>com.alibaba.nacos</groupId>
+			<artifactId>nacos-client</artifactId>
+			<version>2.0.4</version>
 		</dependency>
 
 	</dependencies>

@@ -6,7 +6,7 @@ public class ServiceRegistryFactory {
 
     public synchronized static ServiceRegistry getServiceRegistry(String host, int port) {
         if (null == serviceRegistry) {
-            serviceRegistry = new ZookeeperServiceRegistry(host, port);
+            serviceRegistry = new NacosServiceRegistry(host, port);
             return serviceRegistry;
         }
         return serviceRegistry;
